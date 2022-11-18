@@ -6,6 +6,7 @@
 import nltk
 import json
 from twython import Twython
+import tweepy
 
 
 def load_credentials():
@@ -17,10 +18,35 @@ def load_credentials():
 if __name__ == '__main__':
     f = load_credentials()
     data = json.load(f)
-    twitter = Twython(data['api_key'], data['api_key_secret'], oauth_version=2)
-    ACCESS_TOKEN = twitter.obtain_access_token()
-    twitter = Twython(data['api_key'], access_token=ACCESS_TOKEN)
-    results = twitter.cursor(twitter.search, q='migratie')
-    for result in results:
-        print(result['text'], result['lang'],result['geo'])
+    #twitter = Twython(data['api_key'], data['api_key_secret'], oauth_version=2)
+    #ACCESS_TOKEN = twitter.obtain_access_token()
+    #twitter = Twython(data['api_key'], access_token=ACCESS_TOKEN)
+    """
+    auth = tweepy.OAuth1UserHandler(
+        consumer_key=data['api_key'],
+        consumer_secret=data['api_key_secret'],
+        access_token=data['access_token'],
+        access_token_secret=data['access_token_secret']
+    )
+    api = tweepy.API(auth)
+    
+    """
 
+    auth = tweepy.OAuth2UserHandler(
+        consumer_key=data['api_key'],
+        consumer_secret=data['api_key_secret'],
+        access_token=data['access_token'],
+        access_token_secret=data['access_token_secret']
+    )
+    print(auth)
+    '''
+    client = tweepy.Client(bearer_token='REPLACE_ME')
+
+    tweets = tweepy.Cursor(api.search_full_archive, label='FullArchive', query='migratie',
+                           fromDate="202008130000").items()
+    #results = twitter.cursor(twitter.search, q='migratie', lang='nl',geocode="50.8467887,4.3524356,100km",max_results="500")
+    print(type(tweets))
+    for result in tweets:
+        #print(result['text'], result['lang'],result['geo'], result['created_at'])
+        print(result)
+    '''
