@@ -5,7 +5,6 @@
 
 import nltk
 import json
-from twython import Twython
 import tweepy
 
 
