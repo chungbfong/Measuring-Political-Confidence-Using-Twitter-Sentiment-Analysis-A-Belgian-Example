@@ -6,11 +6,15 @@
 import nltk
 import json
 import tweepy
-
+import preprocessor as p
+import pprint
+import re
 
 def load_credentials():
     cred = open('credentials/twitter_credentials.json')
     return cred
+
+
 
 
 # Press the green button in the gutter to run the script.
@@ -20,12 +24,23 @@ if __name__ == '__main__':
 
     client = tweepy.Client(data['bearer_token'])
 
-    query_string = 'migratie -is:retweet lang:nl place_country:BE'
-    tweets = client.search_all_tweets(query=query_string,start_time = "2019-09-29T18:46:19Z",end_time = "2020-10-29T18:46:19Z",max_results=500)
+    query_string = 'from:Bart_DeWever migratie -is:retweet lang:nl '
+    tweets = client.search_all_tweets(query=query_string,start_time = "2021-09-29T18:46:19Z",end_time = "2022-10-19T18:46:19Z",max_results=500,tweet_fields=['created_at','id',"author_id"])
     print(len(tweets.data))
 
     for tweet in tweets.data:
-        print(tweet.text)
+        print(tweet)
+        parsed_tweet = p.parse(tweet.text)
+        json_obj ={
+            "mentions": parsed_tweet.mentions,
+            "hashtags":parsed_tweet.hashtags,
+            "urls":parsed_tweet.urls,
+            "emojis":parsed_tweet.emojis,
+            "text": p.clean(tweet.text),
+            "created_at": tweet.created_at,
+            "author_id":tweet.author_id
+        }
+        pprint.pprint(json_obj)
 
 
 
