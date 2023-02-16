@@ -7,6 +7,7 @@ import nltk
 import json
 import tweepy
 import preprocessor as p
+p.set_options(p.OPT.URL, p.OPT.EMOJI)
 import pprint
 import re
 
@@ -24,9 +25,9 @@ def query_tweets(client,user,keyword):
     if keyword != '':
         query_string += ' ' + keyword
 
-    query_string += ' -is:retweet lang:nl'
+    query_string += ' -is:retweet lang:nl place_country:BE'
     print(query_string)
-    tweets = client.search_all_tweets(query=query_string,start_time = "2022-02-15T18:46:19Z",end_time = "2023-2-15T18:46:19Z",max_results=500,tweet_fields=['created_at','id',"author_id"])
+    tweets = client.search_all_tweets(query=query_string,start_time = "2022-02-15T18:46:19Z",end_time = "2023-2-15T18:46:19Z",max_results=500,tweet_fields=['created_at','id',"author_id","public_metrics"])
     print(len(tweets.data))
 
     for tweet in tweets.data:
@@ -37,9 +38,10 @@ def query_tweets(client,user,keyword):
             "hashtags":parsed_tweet.hashtags,
             "urls":parsed_tweet.urls,
             "emojis":parsed_tweet.emojis,
-            "text": p.clean(tweet.text),
+            "text": ''.join(p.clean(tweet.text)),
             "created_at": tweet.created_at,
-            "author_id":tweet.author_id
+            "author_id":tweet.author_id,
+            "public_metrics":tweet.public_metrics
         }
         pprint.pprint(json_obj)
         json_list.append(json.dumps(json_obj,sort_keys=True, default=str))
