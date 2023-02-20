@@ -3,6 +3,8 @@
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 
+
+from datetime import datetime
 import nltk
 import json
 import tweepy
@@ -14,6 +16,18 @@ import re
 def load_credentials():
     cred = open('credentials/twitter_credentials.json')
     return cred
+
+def parseItemHandler(parseItemList):
+    if parseItemList != None:
+        returnList = []
+        for p in parseItemList:
+            returnList.append(p.match)
+
+        return returnList
+
+    else:
+        return None
+
 
 def query_tweets(client,user,keyword):
     json_list = []
@@ -33,18 +47,20 @@ def query_tweets(client,user,keyword):
     for tweet in tweets.data:
         print(tweet)
         parsed_tweet = p.parse(tweet.text)
+        if parsed_tweet.urls :
+            print(type(parsed_tweet.urls[0]))
         json_obj = {
-            "mentions":parsed_tweet.mentions,
-            "hashtags":parsed_tweet.hashtags,
-            "urls":parsed_tweet.urls,
-            "emojis":parsed_tweet.emojis,
-            "text": ''.join(p.clean(tweet.text)),
-            "created_at": tweet.created_at,
-            "author_id":tweet.author_id,
-            "public_metrics":tweet.public_metrics
+            'mentions':parsed_tweet.mentions,
+            'hashtags':parsed_tweet.hashtags,
+            'urls':parseItemHandler(parsed_tweet.urls),
+            'emojis':parseItemHandler(parsed_tweet.emojis),
+            'text': ''.join(p.clean(tweet.text)),
+            'created_at': tweet.created_at.strftime("%Y-%m-%dT%H:%M:%SZ"),
+            'author_id':tweet.author_id,
+            'public_metrics':tweet.public_metrics
         }
         pprint.pprint(json_obj)
-        json_list.append(json.dumps(json_obj,sort_keys=True, default=str))
+        json_list.append(json_obj)
     return json_list
 
 def process_tweet(client,user,keyword):
