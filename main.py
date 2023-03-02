@@ -94,7 +94,8 @@ def query_tweets(client,user,keyword,start_time,end_time):
                         'text': ''.join(p.clean(tweet.text)),
                         'created_at': tweet.created_at.strftime("%Y-%m-%dT%H:%M:%SZ"),
                         'author_id': tweet.author_id,
-                        'public_metrics': tweet.public_metrics
+                        'public_metrics': tweet.public_metrics,
+                        'id':tweet.id
                     }
                     pprint.pprint(json_obj)
                     json_list.append(json_obj)
