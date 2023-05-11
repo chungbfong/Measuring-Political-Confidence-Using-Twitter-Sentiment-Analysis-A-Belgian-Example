@@ -9,6 +9,7 @@ p.set_options(p.OPT.URL, p.OPT.EMOJI)
 import pprint
 import os
 import re
+from twitter_sentiment_classifier import batch_predict
 
 def load_credentials():
     cred = open('credentials/twitter_credentials.json')
@@ -25,6 +26,9 @@ def parseItemHandler(parseItemList):
 
     else:
         return None
+
+def conductSA(text_list):
+    return batch_predict(text_list)
 
 def query_tweets(client,user,keyword,start_time,end_time):
     json_list = []
@@ -56,16 +60,18 @@ def query_tweets(client,user,keyword,start_time,end_time):
                     parsed_tweet = p.parse(tweet.text)
                     # if parsed_tweet.urls :
                     #     print(type(parsed_tweet.urls[0]))
+                    cleaned_tweet_text = ''.join(p.clean(tweet.text))
                     json_obj = {
                         'mentions': re.findall("@(\w+)", tweet.text) if len(re.findall("@(\w+)", tweet.text)) != 0 else None,
                         'hashtags': re.findall("#(\w+)", tweet.text) if len(re.findall("#(\w+)", tweet.text)) != 0 else None,
                         'urls': parseItemHandler(parsed_tweet.urls),
                         'emojis': parseItemHandler(parsed_tweet.emojis),
-                        'text': ''.join(p.clean(tweet.text)),
+                        'text': cleaned_tweet_text,
                         'created_at': tweet.created_at.strftime("%Y-%m-%dT%H:%M:%SZ"),
                         'author_id': tweet.author_id,
                         'public_metrics': tweet.public_metrics,
-                        'id':tweet.id
+                        'id':tweet.id,
+                        'sentiment':conductSA([str(cleaned_tweet_text)])[0]
                     }
                     pprint.pprint(json_obj)
                     json_list.append(json_obj)
@@ -84,22 +90,23 @@ if __name__ == '__main__':
     f = load_credentials()
     data = json.load(f)
 
-    folder_path = "general_confidence"  # replace with the path to your folder
+    folder_path_list = ["flemish_politician","flemish_government_confidence","federal_confidence"]# replace with the path to your folder
 
-    file_contents = []
+    for folder_path in folder_path_list:
+        file_contents = []
 
-    #read all keywords in a folder
-    for filename in os.listdir(folder_path):
-        if filename.endswith(".txt"):
-            file_path = os.path.join(folder_path, filename)
-            with open(file_path, "r", encoding='utf-8') as f:
-                lines = f.read()
-            file_contents = file_contents + lines.split(",")
+        #read all keywords in a folder
+        for filename in os.listdir(folder_path):
+            if filename.endswith(".txt"):
+                file_path = os.path.join(folder_path, filename)
+                with open(file_path, "r", encoding='utf-8') as f:
+                    lines = f.read()
+                file_contents = file_contents + lines.split(",")
 
-    for keyword in file_contents:
-        client = tweepy.Client(data['bearer_token'])
-        process_tweet(client,"",keyword,"2008","2018",folder_path)
-        time.sleep(1)
+        for keyword in file_contents:
+            client = tweepy.Client(data['bearer_token'])
+            process_tweet(client,"",keyword,"2008","2018",folder_path)
+            time.sleep(1)
 
 
 
