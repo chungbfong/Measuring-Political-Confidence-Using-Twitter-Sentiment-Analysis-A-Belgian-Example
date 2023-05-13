@@ -13,7 +13,7 @@ The removed accounts are listed by category, namely the government institution a
 This is an example of how to list things you need to use the software and how to install them. 
 * pip
   ```sh
-  pip install requirements.txt
+  pip install -r requirements.txt
   ```
 
 <!-- USAGE EXAMPLES -->
