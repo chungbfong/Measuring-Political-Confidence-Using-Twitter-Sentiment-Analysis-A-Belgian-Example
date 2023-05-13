@@ -8,5 +8,32 @@ The keyword lists consist of multiple types of keywords, namely the keyword list
 
 The removed accounts are listed by category, namely the government institution accounts and the media institution accounts. They are saved as Excel files.
 
-##Python code
-(marco continue here)
+## Prerequisites
+
+This is an example of how to list things you need to use the software and how to install them. 
+* npm
+  ```sh
+  pip install requirements.txt
+  ```
+
+<!-- USAGE EXAMPLES -->
+## Usage
+
+The repo contains multiple python scripts which are the core of this paper. 
+
+- query_twitter_id.py
+  - queries twitter ids and handles 
+- remove_bias.py
+  - removes bias and conduct data preprocessing
+- smape.py
+  - conducts Symmetric Mean Absolute Percentage Error
+- use_autorank.py
+  - conducts autorank 
+- weighting.py
+  - introduces weighting method as shown in the paper
+- main.py
+  - contains the main crawler and the sentiment model
+
+## Contact
+
+Marco Chi Chung Fong - marcochichung.fong@student.kuleuven.be
