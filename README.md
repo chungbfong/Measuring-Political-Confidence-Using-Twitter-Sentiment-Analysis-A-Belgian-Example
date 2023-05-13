@@ -30,6 +30,8 @@ The repo contains multiple python scripts which are the core of this paper.
 - main.py
   - contains the main crawler and the sentiment model
 
+The raw data and results can be accessed in the "data" directory. 
+
 ## Contact
 
 Marco Chi Chung Fong - marcochichung.fong@student.kuleuven.be
