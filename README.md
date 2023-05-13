@@ -11,7 +11,7 @@ The removed accounts are listed by category, namely the government institution a
 ## Prerequisites
 
 This is an example of how to list things you need to use the software and how to install them. 
-* npm
+* pip
   ```sh
   pip install requirements.txt
   ```
