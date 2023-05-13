@@ -21,10 +21,6 @@ This is an example of how to list things you need to use the software and how to
 
 The repo contains multiple python scripts which are the core of this paper. 
 
-- query_twitter_id.py
-  - queries twitter ids and handles 
-- remove_bias.py
-  - removes bias and conduct data preprocessing
 - smape.py
   - conducts Symmetric Mean Absolute Percentage Error
 - use_autorank.py
