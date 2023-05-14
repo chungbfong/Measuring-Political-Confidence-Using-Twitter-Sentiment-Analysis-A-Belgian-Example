@@ -10,7 +10,7 @@ The removed accounts are listed by category, namely the government institution a
 
 ## Prerequisites
 
-You can suggested to use an anaconda environment to run this project.
+You are suggested to use an anaconda environment to run this project. The packages requirements can be found in requirements.txt .
 * pip
   ```sh
   pip install -r requirements.txt
