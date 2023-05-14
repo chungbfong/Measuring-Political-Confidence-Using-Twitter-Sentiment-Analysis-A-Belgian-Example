@@ -10,7 +10,7 @@ The removed accounts are listed by category, namely the government institution a
 
 ## Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them. 
+You can suggested to use an anaconda environment to run this project.
 * pip
   ```sh
   pip install -r requirements.txt
